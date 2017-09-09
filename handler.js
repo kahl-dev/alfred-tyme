@@ -4,24 +4,7 @@ const Tyme = require('./tyme');
 
 class Handler {
   static getTasks() {
-    // @TODO sort latest uses
-    const projects = Alfy.cache.get('projects');
-    const tasks = Alfy.cache.get('tasks');
-
-    const items = tasks.map(task => {
-      const index = projects.findIndex(obj => obj.id === task.relatedprojectid);
-      const project = projects[index];
-
-      return {
-        title: task.name,
-        autocomplete: task.name,
-        subtitle: project ? project.name : '',
-        variables: {
-          task: JSON.stringify(task),
-        },
-      };
-    });
-
+    const items = Alfy.cache.get('handler.getTasks');
     Alfy.output(items);
   }
 

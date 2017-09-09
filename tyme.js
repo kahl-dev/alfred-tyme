@@ -42,7 +42,7 @@ class Tyme {
         const tasks = tyme.projects.tasks.whose(
           arg
         )().reduce((arr, project) => {
-          if (project.length)
+          if (project.length) {
             arr.push(
               ...project.map(task => ({
                 completed: task.completed(),
@@ -50,8 +50,15 @@ class Tyme {
                 name: task.name(),
                 relatedprojectid: task.relatedprojectid(),
                 pcls: 'task',
+                lastUpdate: (taskRecord = task
+                  .taskrecords()
+                  .slice(-1)
+                  .pop())
+                  ? taskRecord.timestart()
+                  : undefined,
               }))
             );
+          }
           return arr;
         }, []);
 
@@ -77,6 +84,12 @@ class Tyme {
                 name: task.name(),
                 relatedprojectid: task.relatedprojectid(),
                 pcls: 'task',
+                lastUpdate: (taskRecord = task
+                  .taskrecords()
+                  .slice(-1)
+                  .pop())
+                  ? taskRecord.timestart()
+                  : undefined,
               }))
             );
           return arr;

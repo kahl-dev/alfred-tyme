@@ -3,6 +3,33 @@ const Alfy = require('alfy');
 const Tyme = require('./tyme');
 
 class Cache {
+  static creatStartTaskOutput() {
+    const projects = Alfy.cache.get('projects');
+    const tasks = Alfy.cache.get('tasks');
+
+    if (!projects && !tasks) return;
+
+    const items = tasks
+      .sort((a, b) => new Date(b.lastUpdate) - new Date(a.lastUpdate))
+      .map(task => {
+        const index = projects.findIndex(
+          obj => obj.id === task.relatedprojectid
+        );
+        const project = projects[index];
+
+        return {
+          title: task.name,
+          autocomplete: task.name,
+          subtitle: project ? project.name : '',
+          variables: {
+            task: JSON.stringify(task),
+          },
+        };
+      });
+
+    Alfy.cache.set('handler.getTasks', items);
+  }
+
   static updateProjects() {
     Tyme.projects()
       .then(data => {
@@ -37,6 +64,7 @@ class Cache {
         }
 
         Alfy.cache.set('projects', projects);
+        this.creatStartTaskOutput();
       })
       .catch(console.log);
   }
@@ -68,6 +96,8 @@ class Cache {
         }
 
         Alfy.cache.set('tasks', tasks);
+        this.updateProject(data.relatedprojectid);
+        this.creatStartTaskOutput();
       })
       .catch(console.log);
   }
@@ -82,6 +112,8 @@ class Cache {
           `taskRecordsByTaskId:${data.taskRecords[0].relatedtaskid}`,
           data.taskRecords
         );
+
+        this.updateTask(data.taskRecords[0].relatedtaskid);
       })
       .catch(console.log);
   }
@@ -109,6 +141,7 @@ class Cache {
             );
         });
 
+        this.creatStartTaskOutput();
         console.log('Successfully cache updated');
       })
       .catch(console.log);
