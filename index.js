@@ -3,7 +3,6 @@ const Alfy = require('alfy');
 const Handler = require('./handler');
 const Cache = require('./cache');
 
-// @TODO auto cp tyme2 hook scpt
 // @TODO add export // external workflow
 // @TODO creat tasks from browser
 // @TODO archive multiple

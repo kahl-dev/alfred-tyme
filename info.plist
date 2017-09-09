@@ -481,11 +481,11 @@
 				<key>argumenttype</key>
 				<integer>2</integer>
 				<key>keyword</key>
-				<string>ty cache</string>
+				<string>ty init</string>
 				<key>subtext</key>
-				<string>Update or create cache for Tyme2</string>
+				<string>Create neccessary Tyme2 hook and init/reint cache for Tyme2</string>
 				<key>text</key>
-				<string>cache</string>
+				<string>init</string>
 				<key>withspace</key>
 				<false/>
 			</dict>
@@ -504,7 +504,8 @@
 				<key>escaping</key>
 				<integer>102</integer>
 				<key>script</key>
-				<string>./node_modules/.bin/run-node index.js "cache:default:$1"</string>
+				<string>cp tyme2_applescript_hooks.scpt ~/Library/Application\ Scripts/de.lgerckens.Tyme2/tyme2_applescript_hooks.scpt
+./node_modules/.bin/run-node index.js "cache:default:$1"</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
 				<key>scriptfile</key>
