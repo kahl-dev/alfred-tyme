@@ -1,61 +1,101 @@
 'use strict';
 const alfy = require('alfy');
 const tyme = require('./tyme');
-const runJxa = require('run-jxa');
-const [id = undefined, action, subaction = 'all'] = process.argv[2].split(':');
+const [type = 'cache', func = 'default', id] = process.argv[2].split(':');
 
-// :cache:timerStartedForTaskRecord
-// :cache:timerStoppedForTaskRecord
-// :cache:timeoutDetectedForTaskRecord
-// :cache:projectCompletedChanged
-// :cache:taskCompletedChanged
+class Cache {
+  static updateProjects() {
+    tyme
+      .projects()
+      .then(data => {
+        alfy.cache.set('projects', data);
+      })
+      .catch(console.log);
+  }
 
-switch (true) {
-  case action === 'cache' && subaction === 'updateTaskForTaskRecordId':
-    {
-      tyme
-        .getTaskRecordIds(id)
-        .then(data => {
-          return tyme.taskRecordsForTaskId(data.taskRecord.relatedtaskid);
-        })
-        .then(data => {
-          alfy.cache.set(
-            `taskRecordsForTaskId:${data.taskRecords[0].relatedtaskid}`,
-            data.taskRecords
-          );
-        })
-        .catch(console.log);
+  static updateProject(id) {
+    let projects = alfy.cache.get('projects');
+    if (!projects) {
+      this.updateProjects();
+      return;
     }
-    break;
-  case action === 'cache' && subaction === 'all':
-    {
-      alfy.log('all');
-      runJxa(() => {
-        const tyme = Application('Tyme2');
 
-        const tymeProjects = tyme.projects.whose({ completed: false });
-        const projects = [];
-        const tasks = [];
-        for (projectIndex in tymeProjects) {
-          projects.push(tymeProjects[projectIndex].properties());
-
-          const tymeTasks = tyme.projects[projectIndex].tasks.whose({
-            completed: false,
-          });
-          for (taskIndex in tymeTasks) {
-            tasks.push(tymeTasks[taskIndex].properties());
+    tyme
+      .projectById(id)
+      .then(data => {
+        if (data) {
+          const index = projects.findIndex(project => project.id === data.id);
+          if (data.completed === false) {
+            projects = [
+              ...projects.slice(0, index),
+              data,
+              ...projects.slice(index + 1),
+            ];
+          } else {
+            projects = [
+              ...projects.slice(0, index),
+              ...projects.slice(index + 1),
+            ];
           }
         }
 
-        return { projects, tasks };
+        alfy.cache.set('projects', projects);
       })
-        .then(data => {
-          alfy.cache.set('projects', data.projects);
-          alfy.cache.set('tasks', data.tasks);
+      .catch(console.log);
+  }
 
-          console.log('successfully cached data');
-        })
-        .catch(console.log);
+  static updateTasks(id) {
+    tyme
+      .tasks()
+      .then(data => {
+        alfy.cache.set('tasks', data);
+      })
+      .catch(console.log);
+  }
+
+  static updateTask(id) {
+    let tasks = alfy.cache.get('tasks');
+    if (!tasks) {
+      this.updateTasks();
+      return;
     }
-    break;
+
+    tyme
+      .taskById(id)
+      .then(data => {
+        if (data) {
+          const index = tasks.findIndex(task => task.id === data.id);
+          if (data.completed === false) {
+            tasks = [...tasks.slice(0, index), data, ...tasks.slice(index + 1)];
+          } else {
+            tasks = [...tasks.slice(0, index), ...tasks.slice(index + 1)];
+          }
+        }
+
+        alfy.cache.set('tasks', tasks);
+      })
+      .catch(console.log);
+  }
+
+  static updateTaskForTaskRecordId(id) {
+    tyme
+      .taskRecordById(id)
+      .then(data => {
+        return tyme.taskRecordsByTaskId(data.taskRecord.relatedtaskid);
+      })
+      .then(data => {
+        alfy.cache.set(
+          `taskRecordsByTaskId:${data.taskRecords[0].relatedtaskid}`,
+          data.taskRecords
+        );
+      })
+      .catch(console.log);
+  }
+
+  static default() {
+    this.updateProjects();
+    this.updateTasks();
+  }
 }
+
+Cache[func](id);

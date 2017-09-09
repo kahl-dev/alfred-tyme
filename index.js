@@ -27,12 +27,12 @@ switch (true) {
           obj => obj.id === task.relatedprojectid
         );
         const project = projects[index];
+
         return {
           title: task.name,
           autocomplete: task.name,
-          subtitle: project.name,
+          subtitle: project ? project.name : '',
           variables: {
-            project: JSON.stringify(project),
             task: JSON.stringify(task),
           },
         };
@@ -43,7 +43,7 @@ switch (true) {
     break;
   case action === 'start-note':
     {
-      const taskRecords = alfy.cache.get(`taskRecordsForTaskId:${task.id}`);
+      const taskRecords = alfy.cache.get(`taskRecordsByTaskId:${task.id}`);
       const items = [
         {
           title: 'Write new Note',

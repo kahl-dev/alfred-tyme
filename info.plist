@@ -377,6 +377,14 @@
 			<integer>2</integer>
 		</dict>
 		<dict>
+			<key>type</key>
+			<string>alfred.workflow.utility.junction</string>
+			<key>uid</key>
+			<string>32C3D0A0-7126-479B-A21D-5F97D93C2132</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
 			<key>config</key>
 			<dict>
 				<key>lastpathcomponent</key>
@@ -394,14 +402,6 @@
 			<string>alfred.workflow.output.notification</string>
 			<key>uid</key>
 			<string>9BB7937A-090C-4575-ABF1-6D0615B794AF</string>
-			<key>version</key>
-			<integer>1</integer>
-		</dict>
-		<dict>
-			<key>type</key>
-			<string>alfred.workflow.utility.junction</string>
-			<key>uid</key>
-			<string>32C3D0A0-7126-479B-A21D-5F97D93C2132</string>
 			<key>version</key>
 			<integer>1</integer>
 		</dict>
@@ -434,7 +434,7 @@
 				<key>escaping</key>
 				<integer>102</integer>
 				<key>script</key>
-				<string>./node_modules/.bin/run-node cache.js "$1:cache"</string>
+				<string>./node_modules/.bin/run-node cache.js "$1"</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
 				<key>scriptfile</key>
