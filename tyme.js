@@ -86,28 +86,32 @@ class Tyme {
     );
   }
 
-  static taskRecordsByTaskId(id) {
+  static taskRecordsByTaskId(id, limit = false) {
     return runJxa(
-      id => {
+      (id, limit) => {
         const tyme = Application('Tyme2');
+        let taskRecords = tyme.projects.tasks
+          .whose({ id })
+          .taskrecords()
+          .filter(project => project.length)[0][0];
+
+        if (limit) taskRecords = taskRecords.slice(-Math.abs(limit));
+
         const returnValue = {
           successful: true,
-          taskRecords: tyme.projects.tasks
-            .whose({ id })
-            .taskrecords()
-            .filter(project => project.length)[0][0]
-            .map(taskRecord => ({
+          taskRecords:
+            taskRecords.map(taskRecord => ({
               id: taskRecord.id(),
               note: taskRecord.note(),
               relatedprojectid: taskRecord.relatedprojectid(),
               relatedtaskid: taskRecord.relatedtaskid(),
               pcls: 'taskrecord',
-            })),
+            })) || [],
         };
 
         return returnValue;
       },
-      [id]
+      [id, limit]
     );
   }
 

@@ -1,27 +1,24 @@
 'use strict';
-const alfy = require('alfy');
-const tyme = require('./tyme');
-const [type = 'cache', func = 'default', id] = process.argv[2].split(':');
+const Alfy = require('alfy');
+const Tyme = require('./tyme');
 
 class Cache {
   static updateProjects() {
-    tyme
-      .projects()
+    Tyme.projects()
       .then(data => {
-        alfy.cache.set('projects', data);
+        Alfy.cache.set('projects', data);
       })
       .catch(console.log);
   }
 
   static updateProject(id) {
-    let projects = alfy.cache.get('projects');
+    let projects = Alfy.cache.get('projects');
     if (!projects) {
       this.updateProjects();
       return;
     }
 
-    tyme
-      .projectById(id)
+    Tyme.projectById(id)
       .then(data => {
         if (data) {
           const index = projects.findIndex(project => project.id === data.id);
@@ -39,29 +36,27 @@ class Cache {
           }
         }
 
-        alfy.cache.set('projects', projects);
+        Alfy.cache.set('projects', projects);
       })
       .catch(console.log);
   }
 
   static updateTasks(id) {
-    tyme
-      .tasks()
+    Tyme.tasks()
       .then(data => {
-        alfy.cache.set('tasks', data);
+        Alfy.cache.set('tasks', data);
       })
       .catch(console.log);
   }
 
   static updateTask(id) {
-    let tasks = alfy.cache.get('tasks');
+    let tasks = Alfy.cache.get('tasks');
     if (!tasks) {
       this.updateTasks();
       return;
     }
 
-    tyme
-      .taskById(id)
+    Tyme.taskById(id)
       .then(data => {
         if (data) {
           const index = tasks.findIndex(task => task.id === data.id);
@@ -72,19 +67,18 @@ class Cache {
           }
         }
 
-        alfy.cache.set('tasks', tasks);
+        Alfy.cache.set('tasks', tasks);
       })
       .catch(console.log);
   }
 
   static updateTaskForTaskRecordId(id) {
-    tyme
-      .taskRecordById(id)
+    Tyme.taskRecordById(id)
       .then(data => {
-        return tyme.taskRecordsByTaskId(data.taskRecord.relatedtaskid);
+        return Tyme.taskRecordsByTaskId(data.taskRecord.relatedtaskid);
       })
       .then(data => {
-        alfy.cache.set(
+        Alfy.cache.set(
           `taskRecordsByTaskId:${data.taskRecords[0].relatedtaskid}`,
           data.taskRecords
         );
@@ -93,9 +87,32 @@ class Cache {
   }
 
   static default() {
+    Alfy.cache.clear();
+
     this.updateProjects();
     this.updateTasks();
+
+    Tyme.tasks()
+      .then(data => {
+        const promises = [];
+        data.forEach(task => {
+          promises.push(Tyme.taskRecordsByTaskId(task.id, 10));
+        });
+        return Promise.all(promises);
+      })
+      .then(data => {
+        data.forEach(req => {
+          if (req.successful && req.taskRecords.length)
+            Alfy.cache.set(
+              `taskRecordsByTaskId:${req.taskRecords[0].relatedtaskid}`,
+              req.taskRecords
+            );
+        });
+
+        console.log('Successfully cache updated');
+      })
+      .catch(console.log);
   }
 }
 
-Cache[func](id);
+module.exports = Cache;

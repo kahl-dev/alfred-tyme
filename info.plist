@@ -12,7 +12,7 @@
 		<array>
 			<dict>
 				<key>destinationuid</key>
-				<string>796526B6-A4C6-4D4D-9B70-B0F3FA58B701</string>
+				<string>ED63D015-14F2-4206-A367-6D74B3672A2D</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -60,6 +60,32 @@
 				<false/>
 			</dict>
 		</array>
+		<key>54DADA0D-ED3F-433B-B867-22ECB76F3D87</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>32C3D0A0-7126-479B-A21D-5F97D93C2132</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+		<key>7258C6AC-AAA4-49DB-BBB4-BF0B841AF1F9</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>F501AAA7-2BB9-4FAE-A65A-0BCADCBF3D56</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
 		<key>75DF1052-EF7C-4BB8-8494-4BE7A55A1B83</key>
 		<array>
 			<dict>
@@ -77,7 +103,7 @@
 		<array>
 			<dict>
 				<key>destinationuid</key>
-				<string>32C3D0A0-7126-479B-A21D-5F97D93C2132</string>
+				<string>54DADA0D-ED3F-433B-B867-22ECB76F3D87</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -116,7 +142,20 @@
 		<array>
 			<dict>
 				<key>destinationuid</key>
-				<string>F501AAA7-2BB9-4FAE-A65A-0BCADCBF3D56</string>
+				<string>7258C6AC-AAA4-49DB-BBB4-BF0B841AF1F9</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+		<key>ED63D015-14F2-4206-A367-6D74B3672A2D</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>54DADA0D-ED3F-433B-B867-22ECB76F3D87</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -176,13 +215,13 @@
 		</array>
 	</dict>
 	<key>createdby</key>
-	<string></string>
+	<string>Patrick Kahl</string>
 	<key>description</key>
-	<string></string>
+	<string>Handle all types off desirable Tyme2 actions from Alfred</string>
 	<key>disabled</key>
 	<false/>
 	<key>name</key>
-	<string>tyme</string>
+	<string>Tyme2</string>
 	<key>objects</key>
 	<array>
 		<dict>
@@ -209,7 +248,7 @@
 				<key>runningsubtext</key>
 				<string>Searching...</string>
 				<key>script</key>
-				<string>./node_modules/.bin/run-node index.js "$1" "start-note"</string>
+				<string>./node_modules/.bin/run-node index.js "handler:getNotes:$1"</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
 				<key>scriptfile</key>
@@ -227,6 +266,29 @@
 			<string>alfred.workflow.input.scriptfilter</string>
 			<key>uid</key>
 			<string>F0DE626F-1D6B-4A68-8BF6-D97994DFCC14</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>script</key>
+				<string>./node_modules/.bin/run-node index.js "handler:startTracking:$1"</string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>F501AAA7-2BB9-4FAE-A65A-0BCADCBF3D56</string>
 			<key>version</key>
 			<integer>2</integer>
 		</dict>
@@ -254,24 +316,6 @@
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>argument</key>
-				<string>{query}</string>
-				<key>variables</key>
-				<dict>
-					<key>task</key>
-					<string>{var:task}</string>
-				</dict>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.utility.argument</string>
-			<key>uid</key>
-			<string>B86CBDCB-785C-459F-A42C-A1A71082E8F6</string>
-			<key>version</key>
-			<integer>1</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
 				<key>alfredfiltersresults</key>
 				<true/>
 				<key>argumenttrimmode</key>
@@ -293,15 +337,15 @@
 				<key>runningsubtext</key>
 				<string>Searching...</string>
 				<key>script</key>
-				<string>./node_modules/.bin/run-node index.js "$1" "start-task"</string>
+				<string>./node_modules/.bin/run-node index.js "handler:getTasks:$1"</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
 				<key>scriptfile</key>
 				<string>index.js</string>
 				<key>subtext</key>
-				<string></string>
+				<string>Start task tracking Tyme2</string>
 				<key>title</key>
-				<string>Start task tracking</string>
+				<string>start</string>
 				<key>type</key>
 				<integer>0</integer>
 				<key>withspace</key>
@@ -313,6 +357,32 @@
 			<string>F24B6355-ABEE-43D9-BF93-698BEF85A173</string>
 			<key>version</key>
 			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argument</key>
+				<string>{query}</string>
+				<key>variables</key>
+				<dict>
+					<key>task</key>
+					<string>{var:task}</string>
+				</dict>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.utility.argument</string>
+			<key>uid</key>
+			<string>B86CBDCB-785C-459F-A42C-A1A71082E8F6</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>type</key>
+			<string>alfred.workflow.utility.junction</string>
+			<key>uid</key>
+			<string>7258C6AC-AAA4-49DB-BBB4-BF0B841AF1F9</string>
+			<key>version</key>
+			<integer>1</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -340,9 +410,9 @@
 				<key>keyword</key>
 				<string>ty stop</string>
 				<key>subtext</key>
-				<string></string>
+				<string>Stop task tracking Tyme2</string>
 				<key>text</key>
-				<string>Stop task tracking</string>
+				<string>stop</string>
 				<key>withspace</key>
 				<false/>
 			</dict>
@@ -361,7 +431,7 @@
 				<key>escaping</key>
 				<integer>102</integer>
 				<key>script</key>
-				<string>./node_modules/.bin/run-node index.js "$1" "stop"</string>
+				<string>./node_modules/.bin/run-node index.js "handler:stopTracking:$1"</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
 				<key>scriptfile</key>
@@ -377,14 +447,6 @@
 			<integer>2</integer>
 		</dict>
 		<dict>
-			<key>type</key>
-			<string>alfred.workflow.utility.junction</string>
-			<key>uid</key>
-			<string>32C3D0A0-7126-479B-A21D-5F97D93C2132</string>
-			<key>version</key>
-			<integer>1</integer>
-		</dict>
-		<dict>
 			<key>config</key>
 			<dict>
 				<key>lastpathcomponent</key>
@@ -394,14 +456,22 @@
 				<key>removeextension</key>
 				<false/>
 				<key>text</key>
-				<string></string>
-				<key>title</key>
 				<string>{query}</string>
+				<key>title</key>
+				<string></string>
 			</dict>
 			<key>type</key>
 			<string>alfred.workflow.output.notification</string>
 			<key>uid</key>
 			<string>9BB7937A-090C-4575-ABF1-6D0615B794AF</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>type</key>
+			<string>alfred.workflow.utility.junction</string>
+			<key>uid</key>
+			<string>32C3D0A0-7126-479B-A21D-5F97D93C2132</string>
 			<key>version</key>
 			<integer>1</integer>
 		</dict>
@@ -413,9 +483,9 @@
 				<key>keyword</key>
 				<string>ty cache</string>
 				<key>subtext</key>
-				<string></string>
+				<string>Update or create cache for Tyme2</string>
 				<key>text</key>
-				<string>Cache Tyme Data</string>
+				<string>cache</string>
 				<key>withspace</key>
 				<false/>
 			</dict>
@@ -434,7 +504,7 @@
 				<key>escaping</key>
 				<integer>102</integer>
 				<key>script</key>
-				<string>./node_modules/.bin/run-node cache.js "$1"</string>
+				<string>./node_modules/.bin/run-node index.js "cache:default:$1"</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
 				<key>scriptfile</key>
@@ -450,27 +520,12 @@
 			<integer>2</integer>
 		</dict>
 		<dict>
-			<key>config</key>
-			<dict>
-				<key>concurrently</key>
-				<false/>
-				<key>escaping</key>
-				<integer>102</integer>
-				<key>script</key>
-				<string>./node_modules/.bin/run-node index.js "$1" "start-id"</string>
-				<key>scriptargtype</key>
-				<integer>1</integer>
-				<key>scriptfile</key>
-				<string></string>
-				<key>type</key>
-				<integer>0</integer>
-			</dict>
 			<key>type</key>
-			<string>alfred.workflow.action.script</string>
+			<string>alfred.workflow.utility.junction</string>
 			<key>uid</key>
-			<string>F501AAA7-2BB9-4FAE-A65A-0BCADCBF3D56</string>
+			<string>54DADA0D-ED3F-433B-B867-22ECB76F3D87</string>
 			<key>version</key>
-			<integer>2</integer>
+			<integer>1</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -485,6 +540,29 @@
 			<key>version</key>
 			<integer>1</integer>
 		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>script</key>
+				<string>./node_modules/.bin/run-node index.js "$1"</string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>ED63D015-14F2-4206-A367-6D74B3672A2D</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
 	</array>
 	<key>readme</key>
 	<string></string>
@@ -492,94 +570,153 @@
 	<dict>
 		<key>05A95AC1-3CC8-4314-890C-2DC05F1A4C46</key>
 		<dict>
+			<key>colorindex</key>
+			<integer>5</integer>
+			<key>note</key>
+			<string>Tyme2 hook</string>
 			<key>xpos</key>
-			<integer>30</integer>
+			<integer>20</integer>
 			<key>ypos</key>
-			<integer>430</integer>
+			<integer>620</integer>
 		</dict>
 		<key>1B0025E1-DBF4-4523-B6EC-EF875F0AD150</key>
 		<dict>
+			<key>colorindex</key>
+			<integer>1</integer>
 			<key>xpos</key>
-			<integer>240</integer>
+			<integer>260</integer>
 			<key>ypos</key>
-			<integer>160</integer>
+			<integer>220</integer>
 		</dict>
 		<key>2B5EA62E-CB41-4864-80CB-EABACD46EF2B</key>
 		<dict>
+			<key>colorindex</key>
+			<integer>3</integer>
 			<key>xpos</key>
-			<integer>650</integer>
+			<integer>380</integer>
 			<key>ypos</key>
-			<integer>10</integer>
+			<integer>20</integer>
 		</dict>
 		<key>32C3D0A0-7126-479B-A21D-5F97D93C2132</key>
 		<dict>
+			<key>colorindex</key>
+			<integer>12</integer>
 			<key>xpos</key>
-			<integer>780</integer>
+			<integer>860</integer>
 			<key>ypos</key>
-			<integer>200</integer>
+			<integer>350</integer>
+		</dict>
+		<key>54DADA0D-ED3F-433B-B867-22ECB76F3D87</key>
+		<dict>
+			<key>colorindex</key>
+			<integer>5</integer>
+			<key>xpos</key>
+			<integer>430</integer>
+			<key>ypos</key>
+			<integer>550</integer>
+		</dict>
+		<key>7258C6AC-AAA4-49DB-BBB4-BF0B841AF1F9</key>
+		<dict>
+			<key>colorindex</key>
+			<integer>3</integer>
+			<key>xpos</key>
+			<integer>520</integer>
+			<key>ypos</key>
+			<integer>150</integer>
 		</dict>
 		<key>75DF1052-EF7C-4BB8-8494-4BE7A55A1B83</key>
 		<dict>
+			<key>colorindex</key>
+			<integer>5</integer>
+			<key>note</key>
+			<string>Recreate necessary caches</string>
 			<key>xpos</key>
-			<integer>30</integer>
+			<integer>20</integer>
 			<key>ypos</key>
-			<integer>290</integer>
+			<integer>420</integer>
 		</dict>
 		<key>796526B6-A4C6-4D4D-9B70-B0F3FA58B701</key>
 		<dict>
+			<key>colorindex</key>
+			<integer>5</integer>
 			<key>xpos</key>
-			<integer>240</integer>
+			<integer>260</integer>
 			<key>ypos</key>
-			<integer>290</integer>
+			<integer>420</integer>
 		</dict>
 		<key>9BB7937A-090C-4575-ABF1-6D0615B794AF</key>
 		<dict>
+			<key>colorindex</key>
+			<integer>12</integer>
 			<key>xpos</key>
-			<integer>1040</integer>
+			<integer>940</integer>
 			<key>ypos</key>
-			<integer>200</integer>
+			<integer>320</integer>
 		</dict>
 		<key>ACDAFD1F-8F87-4A81-817F-BFF01E8D2D57</key>
 		<dict>
+			<key>colorindex</key>
+			<integer>1</integer>
 			<key>xpos</key>
-			<integer>30</integer>
+			<integer>20</integer>
 			<key>ypos</key>
-			<integer>160</integer>
+			<integer>220</integer>
 		</dict>
 		<key>B86CBDCB-785C-459F-A42C-A1A71082E8F6</key>
 		<dict>
+			<key>colorindex</key>
+			<integer>3</integer>
 			<key>xpos</key>
-			<integer>270</integer>
+			<integer>200</integer>
 			<key>ypos</key>
-			<integer>10</integer>
+			<integer>50</integer>
 		</dict>
 		<key>D673B282-2403-4802-A861-4EC6EBD689D8</key>
 		<dict>
+			<key>colorindex</key>
+			<integer>3</integer>
 			<key>xpos</key>
-			<integer>270</integer>
+			<integer>200</integer>
 			<key>ypos</key>
-			<integer>60</integer>
+			<integer>150</integer>
+		</dict>
+		<key>ED63D015-14F2-4206-A367-6D74B3672A2D</key>
+		<dict>
+			<key>colorindex</key>
+			<integer>5</integer>
+			<key>note</key>
+			<string>Create cache from applescript / tyme2 hook</string>
+			<key>xpos</key>
+			<integer>260</integer>
+			<key>ypos</key>
+			<integer>620</integer>
 		</dict>
 		<key>F0DE626F-1D6B-4A68-8BF6-D97994DFCC14</key>
 		<dict>
+			<key>colorindex</key>
+			<integer>3</integer>
 			<key>xpos</key>
-			<integer>450</integer>
+			<integer>260</integer>
 			<key>ypos</key>
-			<integer>10</integer>
+			<integer>20</integer>
 		</dict>
 		<key>F24B6355-ABEE-43D9-BF93-698BEF85A173</key>
 		<dict>
+			<key>colorindex</key>
+			<integer>3</integer>
 			<key>xpos</key>
-			<integer>30</integer>
+			<integer>20</integer>
 			<key>ypos</key>
-			<integer>30</integer>
+			<integer>20</integer>
 		</dict>
 		<key>F501AAA7-2BB9-4FAE-A65A-0BCADCBF3D56</key>
 		<dict>
+			<key>colorindex</key>
+			<integer>3</integer>
 			<key>xpos</key>
-			<integer>610</integer>
+			<integer>620</integer>
 			<key>ypos</key>
-			<integer>410</integer>
+			<integer>20</integer>
 		</dict>
 	</dict>
 	<key>variables</key>
@@ -590,6 +727,6 @@
 	<key>version</key>
 	<string></string>
 	<key>webaddress</key>
-	<string></string>
+	<string>https://github.com/patrickkahl/alfred-tyme</string>
 </dict>
 </plist>
