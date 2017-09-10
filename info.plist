@@ -481,7 +481,7 @@
 				<key>argumenttype</key>
 				<integer>2</integer>
 				<key>keyword</key>
-				<string>ti</string>
+				<string>tin</string>
 				<key>subtext</key>
 				<string>Create neccessary Tyme2 hook and init/reint cache for Tyme2</string>
 				<key>text</key>
@@ -730,7 +730,7 @@
 		<string></string>
 	</dict>
 	<key>version</key>
-	<string>0.3.0</string>
+	<string>0.4.0</string>
 	<key>webaddress</key>
 	<string>https://github.com/patrickkahl/alfred-tyme</string>
 </dict>
