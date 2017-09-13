@@ -3,7 +3,7 @@ const alfy = require('alfy');
 const tyme = require('./tyme');
 const cache = module.exports;
 
-cache.creatStartTaskOutput = () => {
+cache.createTaskOutput = () => {
   const projects = alfy.cache.get('projects');
   const tasks = alfy.cache.get('tasks');
 
@@ -64,7 +64,7 @@ cache.updateProject = id => {
       }
 
       alfy.cache.set('projects', projects);
-      cache.creatStartTaskOutput();
+      cache.createTaskOutput();
     })
     .catch(console.log);
 };
@@ -99,7 +99,7 @@ cache.updateTask = id => {
 
       alfy.cache.set('tasks', tasks);
       cache.updateProject(data.relatedprojectid);
-      cache.creatStartTaskOutput();
+      cache.createTaskOutput();
     })
     .catch(console.log);
 };
@@ -145,7 +145,7 @@ cache.default = () => {
           );
       });
 
-      cache.creatStartTaskOutput();
+      cache.createTaskOutput();
       console.log('Successfully cache updated');
     })
     .catch(console.log);
