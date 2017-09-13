@@ -5,7 +5,7 @@
 	<key>bundleid</key>
 	<string>com.patrickkahl.tyme</string>
 	<key>category</key>
-	<string>Tools</string>
+	<string>underdevelop</string>
 	<key>connections</key>
 	<dict>
 		<key>05A95AC1-3CC8-4314-890C-2DC05F1A4C46</key>
@@ -228,7 +228,7 @@
 			<key>config</key>
 			<dict>
 				<key>alfredfiltersresults</key>
-				<true/>
+				<false/>
 				<key>argumenttrimmode</key>
 				<integer>0</integer>
 				<key>argumenttype</key>
@@ -260,7 +260,7 @@
 				<key>type</key>
 				<integer>0</integer>
 				<key>withspace</key>
-				<true/>
+				<false/>
 			</dict>
 			<key>type</key>
 			<string>alfred.workflow.input.scriptfilter</string>
@@ -317,7 +317,7 @@
 			<key>config</key>
 			<dict>
 				<key>alfredfiltersresults</key>
-				<true/>
+				<false/>
 				<key>argumenttrimmode</key>
 				<integer>0</integer>
 				<key>argumenttype</key>
@@ -349,7 +349,7 @@
 				<key>type</key>
 				<integer>0</integer>
 				<key>withspace</key>
-				<true/>
+				<false/>
 			</dict>
 			<key>type</key>
 			<string>alfred.workflow.input.scriptfilter</string>
@@ -730,7 +730,7 @@
 		<string></string>
 	</dict>
 	<key>version</key>
-	<string>0.4.0</string>
+	<string>1.0.0</string>
 	<key>webaddress</key>
 	<string>https://github.com/patrickkahl/alfred-tyme</string>
 </dict>

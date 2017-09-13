@@ -1,122 +1,102 @@
 'use strict';
 const alfy = require('alfy');
-const tyme = require('./tyme');
+const tyme = require('tyme2');
 const cache = module.exports;
 
 cache.createTaskOutput = () => {
-  const projects = alfy.cache.get('projects');
-  const tasks = alfy.cache.get('tasks');
+  Promise.all([tyme.projects(), tyme.tasks()])
+    .then(data => {
+      const [projects, tasks] = data;
 
-  if (!projects && !tasks) return;
+      const items = tasks
+        .sort((a, b) => {
+          return new Date(b.lastUpdate) - new Date(a.lastUpdate);
+        })
+        .map(task => {
+          const index = projects.findIndex(
+            obj => obj.id === task.relatedprojectid
+          );
+          const project = projects[index];
 
-  const items = tasks
-    .sort((a, b) => new Date(b.lastUpdate) - new Date(a.lastUpdate))
-    .map(task => {
-      const index = projects.findIndex(obj => obj.id === task.relatedprojectid);
-      const project = projects[index];
+          return {
+            title: task.name,
+            subtitle: project ? project.name : '',
+            variables: {
+              task: JSON.stringify(task),
+            },
+          };
+        });
 
-      return {
-        title: task.name,
-        autocomplete: task.name,
-        subtitle: project ? project.name : '',
-        variables: {
-          task: JSON.stringify(task),
-        },
-      };
-    });
-
-  alfy.cache.set('handler.getTasks', items);
+      alfy.cache.set('handler.getTasks', items);
+    })
+    .catch(console.log);
 };
 
-cache.updateProjects = () => {
+cache.createTasksNotesOutput = () => {
   tyme
-    .projects()
-    .then(data => {
-      alfy.cache.set('projects', data);
+    .tasks()
+    .then(tasks =>
+      Promise.all(tasks.map(task => tyme.taskRecordsByTaskId(task.id, 10)))
+    )
+    .then(tasks => {
+      tasks.forEach(item => {
+        const task = item.task;
+        const taskRecords = item.taskRecords;
+        const items = [
+          {
+            title: '-- Add new note --',
+          },
+          ...taskRecords
+            .sort((a, b) => new Date(b.timeend) - new Date(a.timeend))
+            .map(taskRecord => taskRecord.note)
+            .filter((elem, pos, arr) => {
+              return arr.indexOf(elem) == pos;
+            })
+            .map(note => ({
+              title: note,
+              arg: note,
+            })),
+        ];
+
+        alfy.cache.set(`handle.getNotes.${task.id}`, items);
+      });
     })
     .catch(console.log);
 };
 
 cache.updateProject = id => {
-  let projects = alfy.cache.get('projects');
-  if (!projects) {
-    cache.updateProjects();
-    return;
-  }
-
-  tyme
-    .projectById(id)
-    .then(data => {
-      if (data) {
-        const index = projects.findIndex(project => project.id === data.id);
-        if (data.completed === false) {
-          projects = [
-            ...projects.slice(0, index),
-            data,
-            ...projects.slice(index + 1),
-          ];
-        } else {
-          projects = [
-            ...projects.slice(0, index),
-            ...projects.slice(index + 1),
-          ];
-        }
-      }
-
-      alfy.cache.set('projects', projects);
-      cache.createTaskOutput();
-    })
-    .catch(console.log);
-};
-
-cache.updateTasks = id => {
-  tyme
-    .tasks()
-    .then(data => {
-      alfy.cache.set('tasks', data);
-    })
-    .catch(console.log);
+  cache.createTaskOutput();
 };
 
 cache.updateTask = id => {
-  let tasks = alfy.cache.get('tasks');
-  if (!tasks) {
-    cache.updateTasks();
-    return;
-  }
-
-  tyme
-    .taskById(id)
-    .then(data => {
-      if (data) {
-        const index = tasks.findIndex(task => task.id === data.id);
-        if (data.completed === false) {
-          tasks = [...tasks.slice(0, index), data, ...tasks.slice(index + 1)];
-        } else {
-          tasks = [...tasks.slice(0, index), ...tasks.slice(index + 1)];
-        }
-      }
-
-      alfy.cache.set('tasks', tasks);
-      cache.updateProject(data.relatedprojectid);
-      cache.createTaskOutput();
-    })
-    .catch(console.log);
+  cache.createTaskOutput();
 };
 
 cache.updateTaskForTaskRecordId = id => {
-  tyme
+  const taskRecords = tyme
     .taskRecordById(id)
+    .then(data => tyme.taskRecordsByTaskId(data.taskRecord.relatedtaskid, 10))
     .then(data => {
-      return tyme.taskRecordsByTaskId(data.taskRecord.relatedtaskid);
-    })
-    .then(data => {
-      alfy.cache.set(
-        `taskRecordsByTaskId:${data.taskRecords[0].relatedtaskid}`,
-        data.taskRecords
-      );
+      const task = data.task;
+      const taskRecords = data.taskRecords;
+      const items = [
+        {
+          title: '-- Add new note --',
+        },
+        ...taskRecords
+          .sort((a, b) => new Date(b.timeend) - new Date(a.timeend))
+          .map(taskRecord => taskRecord.note)
+          .filter((elem, pos, arr) => {
+            return arr.indexOf(elem) == pos;
+          })
+          .map(note => ({
+            title: note,
+            arg: note,
+          })),
+      ];
 
-      cache.updateTask(data.taskRecords[0].relatedtaskid);
+      cache.createTaskOutput();
+      alfy.cache.set(`handle.getNotes.${task.id}`, items);
     })
     .catch(console.log);
 };
@@ -124,29 +104,6 @@ cache.updateTaskForTaskRecordId = id => {
 cache.default = () => {
   alfy.cache.clear();
 
-  cache.updateProjects();
-  cache.updateTasks();
-
-  tyme
-    .tasks()
-    .then(data => {
-      const promises = [];
-      data.forEach(task => {
-        promises.push(tyme.taskRecordsByTaskId(task.id, 10));
-      });
-      return Promise.all(promises);
-    })
-    .then(data => {
-      data.forEach(req => {
-        if (req.successful && req.taskRecords.length)
-          alfy.cache.set(
-            `taskRecordsByTaskId:${req.taskRecords[0].relatedtaskid}`,
-            req.taskRecords
-          );
-      });
-
-      cache.createTaskOutput();
-      console.log('Successfully cache updated');
-    })
-    .catch(console.log);
+  cache.createTaskOutput();
+  cache.createTasksNotesOutput();
 };

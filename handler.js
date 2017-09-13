@@ -1,34 +1,30 @@
 'use strict';
 const alfy = require('alfy');
-const tyme = require('./tyme');
+const tyme = require('tyme2');
 const handler = module.exports;
 
-handler.getTasks = () => {
-  const items = alfy.cache.get('handler.getTasks');
+handler.getTasks = value => {
+  const data = alfy.cache.get('handler.getTasks');
+  let items = alfy.matches(
+    value,
+    data,
+    (item, input) =>
+      item.title.search(new RegExp(input.trim(), 'i')) > -1 ||
+      item.subtitle.search(new RegExp(input.trim(), 'i')) > -1
+  );
+
+  if (!items.length) items = [{ title: 'No items found' }];
+
   alfy.output(items);
 };
 
-handler.getNotes = () => {
+handler.getNotes = value => {
   // @TODO add possibillity to to add own default notes
   const task = process.env.task ? JSON.parse(process.env.task) : undefined;
-  const taskRecords = alfy.cache.get(`taskRecordsByTaskId:${task.id}`);
-  const items = [
-    {
-      title: '-- Add new note --',
-    },
-    ...(taskRecords
-      ? taskRecords
-          .slice(-20)
-          .map(taskRecord => taskRecord.note)
-          .filter((elem, pos, arr) => {
-            return arr.indexOf(elem) == pos;
-          })
-          .map(note => ({
-            title: note,
-            arg: note,
-          }))
-      : []),
-  ];
+  const data = alfy.cache.get(`handle.getNotes.${task.id}`);
+  const items = alfy.matches(value, data, (item, input) => {
+    return item.title.search(new RegExp(input.trim(), 'i')) > -1;
+  });
 
   alfy.output(items);
 };
