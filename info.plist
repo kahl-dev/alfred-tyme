@@ -217,7 +217,7 @@
 	<key>createdby</key>
 	<string>Patrick Kahl</string>
 	<key>description</key>
-	<string>Handle all types off desirable Tyme2 actions from Alfred</string>
+	<string>Alfred 3 workflow to Handle all types off desirable Tyme2 actions</string>
 	<key>disabled</key>
 	<false/>
 	<key>name</key>

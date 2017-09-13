@@ -1,6 +1,6 @@
 # alfred-tyme
 
-> Alfred 3 workflow quick start and stop Tyme2 records
+> Alfred 3 workflow to Handle all types off desirable Tyme2 actions
 
 ## Install
 
