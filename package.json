@@ -1,6 +1,6 @@
 {
   "name": "alfred-tyme",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Handle Tyme2",
   "license": "MIT",
   "repository": "patrickkahl/alfred-tyme",
@@ -16,7 +16,7 @@
     "postinstall": "alfy-init",
     "preuninstall": "alfy-cleanup"
   },
-  "files": ["index.js", "handle.js", "cache.js", "icon.png", "info.plist"],
+  "files": ["index.js", "handler.js", "cache.js", "icon.png", "info.plist"],
   "keywords": ["tyme", "alfred", "workflow", "alfy"],
   "dependencies": {
     "alfred-notifier": "^0.2.2",
