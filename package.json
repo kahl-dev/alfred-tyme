@@ -16,8 +16,19 @@
     "postinstall": "alfy-init",
     "preuninstall": "alfy-cleanup"
   },
-  "files": ["index.js", "handler.js", "cache.js", "icon.png", "info.plist"],
-  "keywords": ["tyme", "alfred", "workflow", "alfy"],
+  "files": [
+    "index.js",
+    "handler.js",
+    "cache.js",
+    "icon.png",
+    "info.plist"
+  ],
+  "keywords": [
+    "tyme",
+    "alfred",
+    "workflow",
+    "alfy"
+  ],
   "dependencies": {
     "alfred-notifier": "^0.2.2",
     "alfy": "^0.6.0",
