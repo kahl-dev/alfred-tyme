@@ -1,6 +1,6 @@
 {
   "name": "alfred-tyme",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Handle Tyme2",
   "license": "MIT",
   "repository": "patrickkahl/alfred-tyme",
@@ -33,6 +33,7 @@
     "alfred-notifier": "^0.2.2",
     "alfy": "^0.6.0",
     "run-jxa": "^1.1.0",
+    "shelljs": "^0.8.3",
     "tyme2": "^1.1.0"
   }
 }

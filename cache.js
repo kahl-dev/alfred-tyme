@@ -1,7 +1,11 @@
 'use strict'
+const sh = require('shelljs')
 const alfy = require('alfy')
 const tyme = require('tyme2')
 const cache = module.exports
+
+const TYME_PATH = '~/Library/Application Scripts/de.lgerckens.Tyme2/'
+const TYME_HOOKS_FILE = 'tyme2_applescript_hooks.scpt'
 
 cache.createTaskOutput = () => {
   Promise.all([tyme.projects(), tyme.tasks()])
@@ -103,6 +107,9 @@ cache.updateTaskForTaskRecordId = id => {
 
 cache.default = () => {
   alfy.cache.clear()
+
+  if (!sh.test('-f', TYME_PATH + TYME_HOOKS_FILE))
+    sh.cp(TYME_HOOKS_FILE, TYME_PATH)
 
   cache.createTaskOutput()
   cache.createTasksNotesOutput()

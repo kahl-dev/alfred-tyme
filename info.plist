@@ -229,6 +229,10 @@
 			<dict>
 				<key>alfredfiltersresults</key>
 				<false/>
+				<key>alfredfiltersresultsmatchmode</key>
+				<integer>0</integer>
+				<key>argumenttreatemptyqueryasnil</key>
+				<false/>
 				<key>argumenttrimmode</key>
 				<integer>0</integer>
 				<key>argumenttype</key>
@@ -267,7 +271,7 @@
 			<key>uid</key>
 			<string>F0DE626F-1D6B-4A68-8BF6-D97994DFCC14</string>
 			<key>version</key>
-			<integer>2</integer>
+			<integer>3</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -318,6 +322,10 @@
 			<dict>
 				<key>alfredfiltersresults</key>
 				<false/>
+				<key>alfredfiltersresultsmatchmode</key>
+				<integer>0</integer>
+				<key>argumenttreatemptyqueryasnil</key>
+				<false/>
 				<key>argumenttrimmode</key>
 				<integer>0</integer>
 				<key>argumenttype</key>
@@ -356,7 +364,7 @@
 			<key>uid</key>
 			<string>F24B6355-ABEE-43D9-BF93-698BEF85A173</string>
 			<key>version</key>
-			<integer>2</integer>
+			<integer>3</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -504,8 +512,7 @@
 				<key>escaping</key>
 				<integer>102</integer>
 				<key>script</key>
-				<string>cp tyme2_applescript_hooks.scpt ~/Library/Application\ Scripts/de.lgerckens.Tyme2/tyme2_applescript_hooks.scpt
-./node_modules/.bin/run-node index.js "cache:default:$1"</string>
+				<string>./node_modules/.bin/run-node index.js "cache:default:$1"</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
 				<key>scriptfile</key>
@@ -730,7 +737,7 @@
 		<string></string>
 	</dict>
 	<key>version</key>
-	<string>1.0.2</string>
+	<string>1.0.3</string>
 	<key>webaddress</key>
 	<string>https://github.com/patrickkahl/alfred-tyme</string>
 </dict>
