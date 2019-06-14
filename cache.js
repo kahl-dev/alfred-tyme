@@ -1,22 +1,22 @@
-'use strict';
-const alfy = require('alfy');
-const tyme = require('tyme2');
-const cache = module.exports;
+'use strict'
+const alfy = require('alfy')
+const tyme = require('tyme2')
+const cache = module.exports
 
 cache.createTaskOutput = () => {
   Promise.all([tyme.projects(), tyme.tasks()])
     .then(data => {
-      const [projects, tasks] = data;
+      const [projects, tasks] = data
 
       const items = tasks
         .sort((a, b) => {
-          return new Date(b.lastUpdate) - new Date(a.lastUpdate);
+          return new Date(b.lastUpdate) - new Date(a.lastUpdate)
         })
         .map(task => {
           const index = projects.findIndex(
             obj => obj.id === task.relatedprojectid
-          );
-          const project = projects[index];
+          )
+          const project = projects[index]
 
           return {
             title: task.name,
@@ -24,13 +24,13 @@ cache.createTaskOutput = () => {
             variables: {
               task: JSON.stringify(task),
             },
-          };
-        });
+          }
+        })
 
-      alfy.cache.set('handler.getTasks', items);
+      alfy.cache.set('handler.getTasks', items)
     })
-    .catch(console.log);
-};
+    .catch(console.log)
+}
 
 cache.createTasksNotesOutput = () => {
   tyme
@@ -40,8 +40,8 @@ cache.createTasksNotesOutput = () => {
     )
     .then(tasks => {
       tasks.forEach(item => {
-        const task = item.task;
-        const taskRecords = item.taskRecords;
+        const task = item.task
+        const taskRecords = item.taskRecords
         const items = [
           {
             title: '-- Add new note --',
@@ -50,35 +50,35 @@ cache.createTasksNotesOutput = () => {
             .sort((a, b) => new Date(b.timeend) - new Date(a.timeend))
             .map(taskRecord => taskRecord.note)
             .filter((elem, pos, arr) => {
-              return arr.indexOf(elem) == pos;
+              return arr.indexOf(elem) == pos
             })
             .map(note => ({
               title: note,
               arg: note,
             })),
-        ];
+        ]
 
-        alfy.cache.set(`handle.getNotes.${task.id}`, items);
-      });
+        alfy.cache.set(`handle.getNotes.${task.id}`, items)
+      })
     })
-    .catch(console.log);
-};
+    .catch(console.log)
+}
 
 cache.updateProject = id => {
-  cache.createTaskOutput();
-};
+  cache.createTaskOutput()
+}
 
 cache.updateTask = id => {
-  cache.createTaskOutput();
-};
+  cache.createTaskOutput()
+}
 
 cache.updateTaskForTaskRecordId = id => {
   const taskRecords = tyme
     .taskRecordById(id)
     .then(data => tyme.taskRecordsByTaskId(data.taskRecord.relatedtaskid, 10))
     .then(data => {
-      const task = data.task;
-      const taskRecords = data.taskRecords;
+      const task = data.task
+      const taskRecords = data.taskRecords
       const items = [
         {
           title: '-- Add new note --',
@@ -87,23 +87,23 @@ cache.updateTaskForTaskRecordId = id => {
           .sort((a, b) => new Date(b.timeend) - new Date(a.timeend))
           .map(taskRecord => taskRecord.note)
           .filter((elem, pos, arr) => {
-            return arr.indexOf(elem) == pos;
+            return arr.indexOf(elem) == pos
           })
           .map(note => ({
             title: note,
             arg: note,
           })),
-      ];
+      ]
 
-      cache.createTaskOutput();
-      alfy.cache.set(`handle.getNotes.${task.id}`, items);
+      cache.createTaskOutput()
+      alfy.cache.set(`handle.getNotes.${task.id}`, items)
     })
-    .catch(console.log);
-};
+    .catch(console.log)
+}
 
 cache.default = () => {
-  alfy.cache.clear();
+  alfy.cache.clear()
 
-  cache.createTaskOutput();
-  cache.createTasksNotesOutput();
-};
+  cache.createTaskOutput()
+  cache.createTasksNotesOutput()
+}
